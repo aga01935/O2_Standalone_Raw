@@ -1,0 +1,53 @@
+
+periodJobTag = {
+  "comment: raw compilation and running standalon O2 analysis"
+};
+
+Packages = {
+  "VO_ALICE@O2PhyVer"
+};
+
+Executable = "/alice/cern.ch/user/first_char/user_name/workdir/channel_name/run_all.sh";
+
+InputFile = {
+  "LF:/alice/cern.ch/user/first_char/user_name/workdir/channel_name/config_name",
+   "LF:/alice/cern.ch/user/first_char/user_name/workdir/channel_name/output_dir_name",
+   "LF:/alice/cern.ch/user/first_char/user_name/workdir/channel_name/environment.sh",
+   "LF:/alice/cern.ch/user/first_char/user_name/workdir/channel_name/task_name.cxx",
+   "LF:/alice/cern.ch/user/first_char/user_name/workdir/channel_name/pwgud_name",
+   "LF:/alice/cern.ch/user/first_char/user_name/workdir/channel_name/run.sh",
+   "LF:/alice/cern.ch/user/first_char/user_name/workdir/channel_name/CMakeLists_raw.txt",
+};
+
+InputDataList = "wn.xml";
+InputDataListFormat = "xml-single";
+InputDataCollection = "LF:$1,nodownload";
+Split = "se";
+SplitMaxInputFileNumber = "10";
+
+ValidationCommand = "/alice/cern.ch/user/a/agautam/Run3_Standalone/Test_5/validation.sh";
+
+OutputDir ="/alice/cern.ch/user/first_char/user_name/workdir/channel_name/$2/#alien_counter_04i#";
+
+Output = {
+  "output_files,stdout,stderr,out.log,outcompile.log,*.json"
+};
+OutputErrorE = {
+  "stdout,stderr,out.log,outcompile.log@disk=1"
+};
+
+TTL = 36000;
+Price = 5.0;
+CPUCores = "1";
+MemorySize = "5GB";
+WorkDirectorySize = "12000MB";
+
+JDLVariables = {
+  "Packages",
+  "OutputDir",
+  "CloseSE"
+
+};
+User = "user_name"; 
+
+Email = "user_name@cern.ch";

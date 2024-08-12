@@ -1,0 +1,12 @@
+1. First find your train number of the dataset
+2. got to  
+https://alimonitor.cern.ch/hyperloop/train-run/<train number>/submitted-jobs
+
+3. click button with "copy all output directories"
+
+4. create text file with input_dir.txt and paste "this will paste the comma separated list of directory where your input data is"
+
+5. then run
+make_xml.sh
+
+6. this will have your xml file in the directory
