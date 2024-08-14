@@ -1,6 +1,6 @@
 Channel=${1:-$4Pi_Updated}
 UNAME=${2:-agautam}
-WORK_DIR=${3:-/Run3_Standalone/upc_sg_ana}
+WORK_DIR=${3:-Run3_Standalone/upc_sg_ana}
 O2Phy_Ver=$4:-O2Physics::daily-20240728-0200-1
 PWGUD_Name=${5:-PWGUD_24_07_31.zip}
 TASK_Name=${6:-eventByevent}
@@ -24,6 +24,9 @@ cp eventByevent.cxx $Channel/
 cp CMakeLists_raw.txt $Channel/
 #alien_cp -r file:$Channel $alien_dir
 
-alien.py submit $alien_dir/$channel/JDL output_
+alien.py submit $alien_dir/$Channel/JDL output_
 echo "JDL and script creation completed"
 echo "your working directory is $alien_dir"
+sed "s|filepath|$alien_dir/$channel/output_|g" getoutput_raw.sh >> getoutput.sh
+cp getoutput.sh $Channel/
+echo "when job is done run getoutput.sh to get AO2D.root in your directory"

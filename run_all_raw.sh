@@ -21,8 +21,8 @@ for f in `cat $INPUT_DATA_FILENAME`; do
   chmod +x run.sh
   taskwrapper out.log ". run.sh 
   mv AnalysisResults.root AnalysisResults.$i.root
-  mv AO2D_res.root AO2D_res.$i.root
-  i=$((i+1))"
+  mv AO2D_res.root AO2D_res.$i.root"
+  i=$((i+1))
 
 done
 
