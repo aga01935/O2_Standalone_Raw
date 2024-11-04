@@ -47,18 +47,19 @@ namespace o2::aod
     DECLARE_SOA_COLUMN(ZCENERGY, zcenergy,float);
         //track tables
     DECLARE_SOA_COLUMN(SIGMAPI, sigmapi,std::vector<float>);
+     DECLARE_SOA_COLUMN(SIGMAMU, sigmamu,std::vector<float>);    
     DECLARE_SOA_COLUMN(SIGMAK, sigmak,std::vector<float>);
     DECLARE_SOA_COLUMN(SIGMAEL, sigmael,std::vector<float>);
     DECLARE_SOA_COLUMN(SIGMAPR, sigmapr,std::vector<float>);
-    DECLARE_SOA_COLUMN(PT, Pt,float);
+   /* DECLARE_SOA_COLUMN(PT, Pt,float);
     DECLARE_SOA_COLUMN(RAP, rap,float);
     DECLARE_SOA_COLUMN(PHI, Phi,float);
     DECLARE_SOA_COLUMN(TOTSIGN, totsign,int);
-    DECLARE_SOA_COLUMN(MASS , mass,float);
+    DECLARE_SOA_COLUMN(MASS , mass,float);*/
     DECLARE_SOA_COLUMN(NPVTRACK, npvtrack,int);
-    DECLARE_SOA_COLUMN(PTS, Pts,std::vector<float>);
-    DECLARE_SOA_COLUMN(ETAS, etas,std::vector<float>);
-    DECLARE_SOA_COLUMN(PHIS, Phis,std::vector<float>);
+    DECLARE_SOA_COLUMN(PXS, pxs,std::vector<float>);
+    DECLARE_SOA_COLUMN(PYS, pys,std::vector<float>);
+    DECLARE_SOA_COLUMN(PZS, pzs,std::vector<float>);
     DECLARE_SOA_COLUMN(SIGNS, Signs,std::vector<float>);
    // DECLARE_SOA_COLUMN(RAWTRACKS, rawtracks,int);
    // DECLARE_SOA_COLUMN(PTRACKS, ptracks,int);
@@ -74,19 +75,20 @@ DECLARE_SOA_TABLE(TREE, "AOD", "Tree", //! ZDC information
                   tree::FV0AAMP,
                   tree::ZAENERGY,
                   tree::ZCENERGY,
-                  tree::PT,
+                 /* tree::PT,
                   tree::RAP,
                   tree::PHI,
                   tree::MASS,
-                  tree::TOTSIGN,
+                  tree::TOTSIGN,*/
                   tree::NPVTRACK,
                   tree::SIGMAPI,
+                   tree::SIGMAMU,
                   tree::SIGMAK,
                   tree::SIGMAEL,
                   tree::SIGMAPR,
-                  tree::PTS,
-                  tree::ETAS,
-                  tree::PHIS,
+                  tree::PXS,
+                  tree::PYS,
+                  tree::PZS,
                   tree::SIGNS/*,
                   tree::RAWTRACKS,
                   tree::PTRACKS*/);
@@ -149,10 +151,10 @@ struct EventByEvent {
    
     // tracks
     registry.add("hTracks", "N_{tracks}", kTH1F, {{100, -0.5, 99.5}});
-    registry.add("hTracksPions", "N_{tracks}", kTH1F, {{100, -0.5, 99.5}});
-    registry.add("h4TracksPions", "N_{tracks}", kTH1F, {{100, -0.5, 99.5}});
+    registry.add("hTracksMuons", "N_{tracks}", kTH1F, {{100, -0.5, 99.5}});
+    registry.add("h4TracksMuons", "N_{tracks}", kTH1F, {{100, -0.5, 99.5}});
     registry.add("hdEdx", "p vs dE/dx Signal", kTH2F, {{100, 0.0, 3.0}, {100, 0.0, 200.0}});
-    registry.add("hdEdxPion", "p_{#pi} vs dE/dx Signal", kTH2F, {{100, 0.0, 3.0}, {100, 0.0, 200.0}});
+    //registry.add("hdEdxMuons", "p_{#pi} vs dE/dx Signal", kTH2F, {{100, 0.0, 3.0}, {100, 0.0, 200.0}});
     
     //using Angular Correlation method
 
@@ -189,12 +191,13 @@ struct EventByEvent {
       std::vector<TLorentzVector> allTracks;
       std::vector<TLorentzVector> onlyPionTracks;
       std::vector<float> onlyPionSigma;
-      std::vector<decltype(tracks.begin())> rawPionTracks;
-      std::vector<float> trackpt;
-      std::vector<float> tracketa;
-      std::vector<float> trackphi;
+      std::vector<decltype(tracks.begin())> rawTracks;
+      std::vector<float> trackpx;
+      std::vector<float> trackpy;
+      std::vector<float> trackpz;
       std::vector<float> tracksign;
       std::vector<float> pitpcpid;
+      std::vector<float> mutpcpid;
       std::vector<float> ktpcpid;
       std::vector<float> eltpcpid;
       std::vector<float> prtpcpid;
@@ -221,48 +224,48 @@ struct EventByEvent {
         TLorentzVector a;
         a.SetXYZM(t.px(), t.py(), t.pz(), o2::constants::physics::MassPionCharged);
         allTracks.push_back(a);
-        auto nSigmaPi = t.tpcNSigmaPi();
+        auto nSigmaPi = t.tpcNSigmaMu();
 
-        if (fabs(nSigmaPi) > PID_cut) continue; 
+        //if (fabs(nSigmaMu) > PID_cut) continue; 
           onlyPionTracks.push_back(a);
           onlyPionSigma.push_back(nSigmaPi);
-          rawPionTracks.push_back(t);
-          registry.fill(HIST("hdEdxPion"), t.tpcInnerParam() / t.sign(), dEdx);
+          rawTracks.push_back(t);
+          //registry.fill(HIST("hdEdxMuon"), t.tpcInnerParam() / t.sign(), dEdx);
         
       }
-      registry.fill(HIST("hTracksPions"), onlyPionTracks.size());
+      registry.fill(HIST("hTracksMuons"), onlyPionTracks.size());
       //_____________________________________
       
       
           
-        if (rawPionTracks.size() >= 2) {
+        if (rawTracks.size() >= 2) {
            
-            registry.fill(HIST("h4TracksPions"), onlyPionTracks.size());
+            registry.fill(HIST("h4TracksMuons"), onlyPionTracks.size());
             registry.fill(HIST("hSelectionCounter"), 7);
-            TLorentzVector Parent_Vector;
+           
             int sign = 0;
-            for(auto rtrk : rawPionTracks) {
+            for(auto rtrk : rawTracks) {
                 //**********
                 //to do
                //1.  make vector of vector which store piplus and piminus and its values
                //2.  save px py pz to add different channels and avoid adding mass.
                //******************
-                TLorentzVector itrk;
-                itrk.SetXYZM(rtrk.px(), rtrk.py(), rtrk.pz(), o2::constants::physics::MassPionCharged);
-                Parent_Vector +=itrk;
+               
                 sign += rtrk.sign();
-                trackpt.push_back(itrk.Pt());
-                tracketa.push_back(itrk.Eta());
-                trackphi.push_back(itrk.Phi());
+                trackpx.push_back(rtrk.px());
+                trackpy.push_back(rtrk.py());
+                trackpz.push_back(rtrk.pz());
                 tracksign.push_back(rtrk.sign());
                 pitpcpid.push_back(rtrk.tpcNSigmaPi());
+                mutpcpid.push_back(rtrk.tpcNSigmaMu());
+                
                 ktpcpid.push_back(rtrk.tpcNSigmaKa());
                 eltpcpid.push_back(rtrk.tpcNSigmaEl());
                 prtpcpid.push_back(rtrk.tpcNSigmaPr());
             }
            registry.fill(HIST("hTracks"), collision.numContrib());
                    
-            tree(gapSide,collision.totalFT0AmplitudeA(),collision.totalFT0AmplitudeC(),collision.totalFDDAmplitudeA(),collision.totalFDDAmplitudeC(),collision.totalFV0AmplitudeA(),collision.energyCommonZNA(),collision.energyCommonZNC(),Parent_Vector.Pt(),Parent_Vector.Y(),Parent_Vector.Phi(),Parent_Vector.M(),sign,collision.numContrib(),pitpcpid,ktpcpid,eltpcpid,prtpcpid, trackpt,tracketa,trackphi,tracksign);
+            tree(gapSide,collision.totalFT0AmplitudeA(),collision.totalFT0AmplitudeC(),collision.totalFDDAmplitudeA(),collision.totalFDDAmplitudeC(),collision.totalFV0AmplitudeA(),collision.energyCommonZNA(),collision.energyCommonZNC(),collision.numContrib(),pitpcpid,mutpcpid,ktpcpid,eltpcpid,prtpcpid, trackpx,trackpy,trackpz,tracksign);
         }
       }
       
