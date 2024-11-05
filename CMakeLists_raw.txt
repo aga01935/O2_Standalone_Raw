@@ -8,12 +8,12 @@ add_compile_options(-march=x86-64)
 #set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 
-set(CMAKE_PREFIX_PATH "/cvmfs/alice.cern.ch/el9-x86_64/Packages/arrow/v14.0.1-alice1-1;/cvmfs/alice.cern.ch/el7-x86_64/Packages/libjalienO2/0.1.4-1;/cvmfs/alice.cern.ch/el7-x86_64/Packages/JAliEn-ROOT/0.7.1-1;/cvmfs/alice.cern.ch/el7-x86_64/Packages/DDS/3.7.22-1;/cvmfs/alice.cern.ch/el7-x86_64/Packages/OpenSSL/v1.1.1m-2;/cvmfs/alice.cern.ch/el7-x86_64/Packages/ms_gsl/4.0.0-4;/cvmfs/alice.cern.ch/el7-x86_64/Packages/LLVM/v7.1.0-9;/cvmfs/alice.cern.ch/el9-x86_64/Packages/O2Physics/daily-20240728-0200-1/include")
+#set(CMAKE_PREFIX_PATH "/cvmfs/alice.cern.ch/el9-x86_64/Packages/O2physver/include")
+set(CMAKE_PREFIX_PATH "/cvmfs/alice.cern.ch/el9-x86_64/Packages/arrow/v17.0.0-alice6-1;/cvmfs/alice.cern.ch/el9-x86_64/Packages/libjalienO2/0.1.4-1;/cvmfs/alice.cern.ch/el9-x86_64/Packages/JAliEn-ROOT/0.7.14-1;/cvmfs/alice.cern.ch/el7-x86_64/Packages/DDS/3.10-1;/cvmfs/alice.cern.ch/el9-x86_64/Packages/OpenSSL/v1.1.1m-2;/cvmfs/alice.cern.ch/el7-x86_64/Packages/ms_gsl/4.0.0-4;/cvmfs/alice.cern.ch/el7-x86_64/Packages/LLVM/v7.1.0-9;/cvmfs/alice.cern.ch/el9-x86_64/Packages/O2Physics/daily-20240728-0200-1/include")
 
 #set(CMAKE_PREFIX_PATH "/cvmfs/alice.cern.ch/el7-x86_64/Packages/arrow/v14.0.1-alice1-1;/cvmfs/alice.cern.ch/el7-x86_64/Packages/libjalienO2/0.1.4-1;/cvmfs/alice.cern.ch/el7-x86_64/Packages/JAliEn-ROOT/0.7.1-1")
 
-
-set(OPENSSL_ROOT_DIR "/cvmfs/alice.cern.ch/el7-x86_64/Packages/OpenSSL/v1.1.1m-2")
+set(OPENSSL_ROOT_DIR "/cvmfs/alice.cern.ch/el9-x86_64/Packages/OpenSSL/v1.1.1m-2")
 set(OPENSSL_INCLUDE_DIR "${OPENSSL_ROOT_DIR}/include")
 
 
@@ -24,7 +24,6 @@ include_directories(${OPENSSL_ROOT_DIR}/include)
 set(OPENSSL_FOUND TRUE)
 
 
-set(OPENSSL_ROOT_DIR "/cvmfs/alice.cern.ch/el9-x86_64/Packages/OpenSSL/v1.1.1m-2")
 set(libjalienO2_DIR "/cvmfs/alice.cern.ch/el9-x86_64/Packages/libjalienO2/0.1.4-1/lib64/cmake/jalienO2")
 
 #s et (FLUKA_VMC_DIR "/cvmfs/alice.cern.ch/el7-x86_64/Packages/FLUKA_VMC/4-1.1-vmc3-1")
@@ -48,7 +47,7 @@ add_executable(test ${SOURCES})
 
 set(INCLUDE_DIRS
     ${CMAKE_SOURCE_DIR}
-    /cvmfs/alice.cern.ch/el9-x86_64/Packages/O2Physics/daily-20240728-0200-1/include   
+    /cvmfs/alice.cern.ch/el9-x86_64/Packages/O2physver/include   
 )
 
 

@@ -4,13 +4,14 @@ WD=`pwd`
 INPUT_DATA_FILENAME='input.txt'
 XML_FILENAME='wn.xml'
 
-unzip PWGUD_Dir_Name -d PWGUD
+#unzip PWGUD_Dir_Name -d PWGUD
+unzip PWGUD_Dir_Name
 sed -rn 's/.*turl="([^"]*)".*/\1/p' $XML_FILENAME > $INPUT_DATA_FILENAME
 
 chmod +x run.sh
 
 taskwrapper outcompile.log "chmod +x envirionment.sh
-. environment.sh task_name
+. environment.sh 
 chmod +x task_name"
 
 i=1
