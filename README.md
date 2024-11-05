@@ -12,6 +12,6 @@ first  go to build_workdir and change the lines 1-9 for your analysis
 
 ### step 3
 
-run build_work_dir.sh <your project name>
+run build_work_dir.sh project_name
 ### Result
-your project will be created in folder named <your project name>
+your project will be created in folder named project_name
